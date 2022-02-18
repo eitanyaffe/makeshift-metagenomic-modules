@@ -16,10 +16,10 @@ $(S_INPUT_SRA_DONE):
 	$(MAKE) m=par par \
 		PAR_WORK_DIR=$(INPUT_SRA_WORK_DIR) \
 		PAR_MODULE=input \
-		PAR_MACHINE=n2-standard-32 \
+		PAR_MACHINE=n2-standard-2 \
 		PAR_DISK_TYPE=pd-ssd \
-		PAR_DISK_GB=1000 \
-		PAR_BOOT_GB=1000 \
+		PAR_DISK_GB=200 \
+		PAR_BOOT_GB=200 \
 		PAR_NAME=download_sra \
 		PAR_ODIR_VAR=INPUT_SRA_WORK_DIR \
 		PAR_TARGET=input_sra \

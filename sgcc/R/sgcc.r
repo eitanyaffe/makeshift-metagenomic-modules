@@ -15,7 +15,7 @@ make.table=function(ifn, idir, ofn)
     save.table(rr, ofn)
 }
 
-compare=function(binary, ifn, idir, wdir, kmer, ofn, ofn.stats)
+compare=function(binary, ifn, idir, wdir, kmer, threads, ofn, ofn.stats)
 {
     # collect signatures locally
     df = load.table(ifn)
@@ -43,8 +43,8 @@ compare=function(binary, ifn, idir, wdir, kmer, ofn, ofn.stats)
     write.table(x=paste0(df$SGCC_LIB_ID, ".sig"), file=wfn, quote=F, row.names=F,col.names=F)
 
     # compare sigs
-    exec(sprintf("cd %s && %s compare -k %d --from-file %s --csv %s",
-                      wdir, binary, kmer, wfn, ofn))
+    exec(sprintf("cd %s && %s compare -k %d -p %d --from-file %s --csv %s",
+                      wdir, binary, kmer, threads, wfn, ofn))
     system(paste("rm -rf", wdir))
 
     rr.stats = NULL

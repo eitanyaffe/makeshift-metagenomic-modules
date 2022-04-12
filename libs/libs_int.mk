@@ -323,6 +323,15 @@ STATS_BPS_YIELD?=$(MULTI_STATS_DIR)/bps_yield.txt
 
 STATS_DUPS?=$(MULTI_STATS_DIR)/dups.txt
 
+# relative a baseline of the best library
+STATS_POOL_USE_BASELINE?=T
+
+# inferred pool size
+STATS_POOL_SIZE?=$(MULTI_STATS_DIR)/pool_size.txt
+
+# used to estimate pool weight
+STATS_MOLECULE_LENGTH?=300
+
 LIB_STATS_FDIR?=$(LIBS_FDIR)/stats/$(LIB_STATS_LABEL)
 LIB_STATS_LABELS?=$(LIB_STATS_IDS)
 

@@ -42,7 +42,7 @@ SGCC_LIBS_INPUT_TABLE?=$(LIBS_INPUT_TABLE)
 
 SGCC_TABLE_DIR?=$(SGCC_INFO_DIR)/tables
 
-# input table with SGCC_LIB_ID, SGCC_R1_GZ_FN, SGCC_R2_GZ_FN
+# input table with SGCC_LIB_ID, R1, R2
 SGCC_TABLE?=$(SGCC_TABLE_DIR)/libs.txt
 
 # with extra fields
@@ -76,6 +76,12 @@ SGCC_PIGZ_THREADS?=2
 #####################################################################################################
 # compute signature
 #####################################################################################################
+
+# GCP
+SGCC_CMP_MACHINE_TYPE?=e2-highcpu-32
+SGCC_CMP_THREADS?=32
+SGCC_CMP_DISK_TYPE?=pd-ssd
+SGCC_CMP_DISK_GB?=64
 
 # use up to this number of reads from each library (in millions)
 SGCC_FASTQ_MREADS?=5

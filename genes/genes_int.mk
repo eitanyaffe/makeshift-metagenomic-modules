@@ -211,14 +211,17 @@ RNA_UNIREF_SAM?=$(RNA_UNIREF_DIR)/uniref.sam
 RNA_UNIREF_UNIQUE?=$(RNA_UNIREF_DIR)/unique.sam
 
 #####################################################################################################
-# gene coverage summary
+# library table
 #####################################################################################################
 
-# table with all assembly libs
-GENES_LIBS_TABLE?=$(MAP_LIBS_TABLE)
-
+GENES_LIB_ID?=$(MAP_LIB_ID)
 GENES_LIB_INPUT_R1?=$(MAP_R1)
 GENES_LIB_INPUT_R2?=$(MAP_R2)
+GENES_LIBS_TABLE?=$(MAP_LIBS_TABLE)
+
+#####################################################################################################
+# gene coverage summary
+#####################################################################################################
 
 # remove if read clipped at all
 GENES_COVERAGE_REMOVE_CLIP?=T
@@ -227,13 +230,15 @@ GENES_COVERAGE_MAX_EDIT_DISTANCE?=2
 GENES_COVERAGE_MIN_MATCH_LENGTH?=100
 
 # base dir for all libs
-GENES_COVERAGE_DIR?=$(GENES_BASE_DIR)/coverage
+# GENES_COVERAGE_DIR?=$(GENES_BASE_DIR)/coverage
+GENES_COVERAGE_VER=v1.00
+GENES_COVERAGE_DIR?=$(GENES_ROOT_DIR)/coverage/$(GENES_COVERAGE_VER)/$(ASSEMBLY_ID)
 
 # working dir for parallel runs
 GENES_COVERAGE_INFO_DIR?=$(GENES_COVERAGE_DIR)/info
 
 # library dir
-GENES_COVERAGE_LIB_DIR?=$(GENES_COVERAGE_DIR)/libs/$(MAP_LIB_ID)
+GENES_COVERAGE_LIB_DIR?=$(GENES_COVERAGE_DIR)/libs/$(GENES_LIB_ID)
 
 GENES_COVERAGE_LIB_TABLE?=$(GENES_COVERAGE_LIB_DIR)/gene.table
 GENES_COVERAGE_LIB_STATS?=$(GENES_COVERAGE_LIB_DIR)/gene.stats

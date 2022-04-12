@@ -32,6 +32,12 @@ MAP_SAMTOOLS_SORT_THREADS?=8
 MAP_MERGE_MACHINE_TYPE?=e2-highcpu-8
 MAP_SAMTOOLS_MERGE_THREADS?=8
 
+# disk sizes
+MAP_INDEX_DISK_GB?=32
+MAP_INPUT_DISK_GB?=256
+MAP_CHUNK_DISK_GB?=32
+MAP_MERGE_DISK_GB?=256
+
 #####################################################################################################
 # input
 #####################################################################################################

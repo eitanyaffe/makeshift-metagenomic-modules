@@ -22,6 +22,18 @@ $(STATS_DUP_DONE):
 	$(_end_touch)
 libs_dup_stats: $(STATS_DUP_DONE)
 
+# infer pool size
+STATS_POOL_DONE?=$(MULTI_STATS_DIR)/.done_pool
+$(STATS_POOL_DONE):
+	$(call _start,$(MULTI_STATS_DIR))
+	$(_R) $(_md)/R/stats_pool.r infer.pool.size \
+		ifn=$(STATS_READS_COUNTS) \
+		use.baseline=$(STATS_POOL_USE_BASELINE) \
+		molecule.length=$(STATS_MOLECULE_LENGTH) \
+		ofn=$(STATS_POOL_SIZE)
+	$(_end_touch)
+libs_pool_stats: $(STATS_POOL_DONE)
+
 # select stats
 LIBS_SELECT_DONE?=$(LIBS_SELECT_DIR)/.done_select
 $(LIBS_SELECT_DONE):

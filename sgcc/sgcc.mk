@@ -37,6 +37,7 @@ $(S_SGCC_SIG_DONE):
 		PAR_ODIR_VAR=SGCC_LIB_WORK_DIR \
 		PAR_DISK_GB=$(SGCC_DISK_GB) \
 		PAR_DISK_TYPE=pd-ssd \
+		PAR_EMAIL=F \
 		PAR_MAKEFLAGS="$(PAR_MAKEOVERRIDES)"
 	$(_end_touch)
 s_sig: $(S_SGCC_SIG_DONE)
@@ -54,6 +55,7 @@ $(SGCC_COMPARE_DONE):
 		idir=$(SGCC_BASE_DIR) \
 		wdir=$(SGCC_COMPARE_DIR)/wdir \
 		kmer=$(SGCC_KMER_SIG) \
+		threads=$(SGCC_CMP_THREADS) \
 		ofn=$(SGCC_COMPARE_TABLE) \
 		ofn.stats=$(SGCC_STATS_TABLE)
 	$(MAKE) m=par par_delete_find \

@@ -12,8 +12,8 @@ $(LIB_INPUT_DONE):
 	perl $(_md)/pl/subsample_pair.pl \
 		$(LIBS_FASTQ_READ_COUNT) \
 		$(LIBS_SUBSAMPLE_SEED) \
-		 $(LIB_INPUT_DIR)/merged_R1.fastq \
-		 $(LIB_INPUT_DIR)/merged_R2.fastq \
+		$(LIB_INPUT_DIR)/merged_R1.fastq \
+		$(LIB_INPUT_DIR)/merged_R2.fastq \
 		$(LIBS_INPUT_R1) \
 		$(LIBS_INPUT_R2) \
 		$(LIBS_SUBSAMPLE_STATS)

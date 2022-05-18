@@ -9,6 +9,8 @@ do
     pid=`cat $5`
     kill -STOP $pid
     echo Pausing megahit run and delocalizing $1
+    sleep 10s
     gsutil -mq rsync -r -x ".*\.dsub.*" $2 $3
     kill -CONT $pid
+    echo megahit work resumed
 done

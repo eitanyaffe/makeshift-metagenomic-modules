@@ -3,7 +3,9 @@
 #####################################################################################################
 
 units=genes_prodigal.mk genes_uniref.mk genes_diamond.mk genes_blast_nt.mk genes_GO.mk \
-genes_bins.mk genes_rna.mk genes_manager.mk genes_coverage.mk genes_export.mk
+genes_bins.mk genes_rna.mk genes_manager.mk genes_coverage.mk genes_collect.mk \
+genes_export.mk
+
 $(call _register_module,genes,$(units),,)
 
 #####################################################################################################
@@ -255,3 +257,19 @@ GENES_COVERAGE_MULTI_DIR?=$(GENES_ROOT_DIR)/coverage_assembly_sets/$(GENES_MULTI
 #####################################################################################################
 
 GENES_EXPORT_DIR?=$(BASE_EXPORT_DIR)/genes_$(GENES_VER)
+
+#####################################################################################################
+# genes_collect.mk: collect tables across assemblies
+#####################################################################################################
+
+GENES_COLLECT_VER?=v1
+GENES_COLLECT_ASSEMBLY_ID?=MERGE/$(GENES_COLLECT_VER)
+GENES_COLLECT_DIR?=$(GENES_ROOT_DIR)/$(GENES_COLLECT_ASSEMBLY_ID)
+UNIREF_COLLECT_DIR?=$(UNIREF_ROOT_DIR)/$(GENES_COLLECT_ASSEMBLY_ID)
+
+# basic tables, without trajectory data 
+GENES_COLLECT_VARS?=PRODIGAL_GENE_TABLE
+UNIREF_COLLECT_VARS?=UNIREF_GENE_TAX_TABLE
+
+$(call _sub_variables,$(GENES_COLLECT_VARS),_MERGE,$(ASSEMBLY_ID),$(GENES_COLLECT_ASSEMBLY_ID))
+$(call _sub_variables,$(UNIREF_COLLECT_VARS),_MERGE,$(ASSEMBLY_ID),$(GENES_COLLECT_ASSEMBLY_ID))

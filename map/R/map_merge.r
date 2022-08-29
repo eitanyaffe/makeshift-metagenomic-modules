@@ -14,6 +14,19 @@ merge.bam=function(ifn, threads, idir, ofn)
     exec(command)
 }
 
+merge.bam.sides=function(ifn, threads, idir, ofn1, ofn2)
+{
+    df = load.table(ifn)
+    fns1 = paste(idir, "/", df$chunk, "/R1.bam", collapse=" ", sep="")
+    fns2 = paste(idir, "/", df$chunk, "/R2.bam", collapse=" ", sep="")
+    
+    command1 = sprintf("samtools merge -n -@%d -f %s %s", threads, ofn1, fns1)
+    exec(command1)
+
+    command2 = sprintf("samtools merge -n -@%d -f %s %s", threads, ofn2, fns2)
+    exec(command2)
+}
+
 merge.pairs=function(ifn, idir, ofn)
 {
     df = load.table(ifn)
@@ -53,4 +66,23 @@ merge.sides=function(ifn, idir,
     ## exec(sprintf("head -n +1 %s > %s", fns2[1], ofn2))
     ## for (fn in fns2)
     ##     exec(sprintf("tail -n +2 %s >> %s", fn, ofn2))
+}
+
+union.bam.sides=function(ifn, threads, template.fn1, template.fn2, ofn1, ofn2)
+{
+    df = load.table(ifn)
+    ids = df$MAP_LIB_ID
+
+    fns1 = NULL
+    fns2 = NULL
+    for (id in ids) {
+        fns1 = c(fns1, gsub("DUMMY", id, template.fn1))
+        fns2 = c(fns2, gsub("DUMMY", id, template.fn2))
+    }
+    
+    command = sprintf("samtools merge -n -@%d -f %s %s", threads, ofn1, paste(fns1, collapse=" "))
+    exec(command)
+
+    command = sprintf("samtools merge -n -@%d -f %s %s", threads, ofn2, paste(fns2, collapse=" "))
+    exec(command)
 }

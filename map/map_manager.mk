@@ -57,6 +57,10 @@ $(S_MAP_CHUNKS_DONE): $(S_MAP_INPUT_DONE)
 	$(_end_touch)
 s_map_chunks: $(S_MAP_CHUNKS_DONE)
 
+####################################################################################
+# merge chunks
+####################################################################################
+
 S_MAP_MERGE_DONE?=$(MAP_INFO_DIR)/.done_merge
 $(S_MAP_MERGE_DONE): $(S_MAP_CHUNKS_DONE)
 	$(_start)
@@ -71,6 +75,10 @@ $(S_MAP_MERGE_DONE): $(S_MAP_CHUNKS_DONE)
 		PAR_MAKEFLAGS="$(PAR_MAKEOVERRIDES)"
 	$(_end_touch)
 s_map_merge: $(S_MAP_MERGE_DONE)
+
+####################################################################################
+# cleanup
+####################################################################################
 
 S_MAP_CLEAN_DONE?=$(MAP_INFO_DIR)/.done_clean
 $(S_MAP_CLEAN_DONE): $(S_MAP_MERGE_DONE)
@@ -99,3 +107,4 @@ endif
 s_map_clean: $(S_MAP_CLEAN_DONE)
 
 s_map: $(S_MAP_CLEAN_DONE)
+

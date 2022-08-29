@@ -28,15 +28,19 @@ MAP_CHUNK_MACHINE_TYPE?=e2-standard-4
 MAP_BWA_THREADS?=8
 MAP_SAMTOOLS_SORT_THREADS?=8
 
-# merge bams and tables
+# merge chunk bams and tables
 MAP_MERGE_MACHINE_TYPE?=e2-highcpu-8
 MAP_SAMTOOLS_MERGE_THREADS?=8
+
+# merge chunk bams and tables
+MAP_UNION_MACHINE_TYPE?=e2-highcpu-8
 
 # disk sizes
 MAP_INDEX_DISK_GB?=32
 MAP_INPUT_DISK_GB?=256
 MAP_CHUNK_DISK_GB?=32
 MAP_MERGE_DISK_GB?=256
+MAP_UNION_DISK_GB?=512
 
 #####################################################################################################
 # input
@@ -167,11 +171,17 @@ MAP_ONLY_R2_CHUNK?=$(MAP_CHUNK_DIR)/non_paired_R2.tab
 MAP_PAIRED_STATS?=$(MAP_CHUNK_DIR)/paired.stats
 
 #####################################################################################################
-# merge (final output)
+# merge (final lib output)
 #####################################################################################################
 
 MAP_OUT_DIR?=$(MAP_DIR)/out
+
+# both sides
 MAP_BAM_FILE?=$(MAP_OUT_DIR)/merged.bam
+
+# separate sides
+MAP_BAM_R1?=$(MAP_OUT_DIR)/merged_R1.bam
+MAP_BAM_R2?=$(MAP_OUT_DIR)/merged_R2.bam
 
 # filtered reads, without pairing
 MAP_R1?=$(MAP_OUT_DIR)/merged_R1.tab
@@ -183,6 +193,17 @@ MAP_PAIRED?=$(MAP_OUT_DIR)/merged_paired.tab
 # non-paired sides
 MAP_NON_PAIRED_R1?=$(MAP_OUT_DIR)/non_paired_R1.tab
 MAP_NON_PAIRED_R2?=$(MAP_OUT_DIR)/non_paired_R2.tab
+
+#####################################################################################################
+# union (assembly output)
+#####################################################################################################
+
+# bwa index file
+MAP_UNION_DIR?=$(MAP_BASE_DIR)/union
+
+# separate sides
+MAP_UNION_BAM_R1?=$(MAP_UNION_DIR)/union_R1.bam
+MAP_UNION_BAM_R2?=$(MAP_UNION_DIR)/union_R2.bam
 
 #####################################################################################################
 # stats

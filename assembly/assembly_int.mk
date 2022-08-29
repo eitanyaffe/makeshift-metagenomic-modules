@@ -152,6 +152,11 @@ ASSEMBLY_MIN_LEN?=1000
 ASSEMBLY_CONTIG_FILE?=$(ASSEMBLY_WORK_DIR)/long_contigs
 ASSEMBLY_CONTIG_TABLE?=$(ASSEMBLY_WORK_DIR)/long_contig_table
 
+MEGAHIT_WORK_DIR?=$(ASSEMBLY_WORK_DIR)/run
+
+# input for fastg converter
+MEGAHIT_FASTA?=$(MEGAHIT_WORK_DIR)/intermediate_contigs/k$(MEGAHIT_MAX_KMER).contigs.fa
+
 # fastg of result
 MEGAHIT_FASTG?=$(ASSEMBLY_WORK_DIR)/k$(MEGAHIT_MAX_KMER).fastg
 

@@ -2,8 +2,6 @@
 # run megahit
 ##########################################################################################################
 
-MEGAHIT_WORK_DIR?=$(ASSEMBLY_WORK_DIR)/run
-
 # keep megahit pid to pause it while rsyncing data
 RSYNC_BG_PID_FN?=$(ASSEMBLY_WORK_DIR)/.rsync_bg_pid
 MEGAHIT_PID_FN?=$(ASSEMBLY_WORK_DIR)/.megahit_pid
@@ -73,7 +71,7 @@ $(MEGAHIT_FASTG_DONE): $(MEGAHIT_CLEAN_DONE)
 	$(_start)
 	$(MEGAHIT_BIN)_toolkit contig2fastg \
 		$(MEGAHIT_MAX_KMER) \
-		$(MEGAHIT_WORK_DIR)/intermediate_contigs/k$(MEGAHIT_MAX_KMER).contigs.fa \
+		$(MEGAHIT_FASTA) \
 		> $(MEGAHIT_FASTG)
 	$(_end_touch)
 megahit_fastg: $(MEGAHIT_FASTG_DONE)

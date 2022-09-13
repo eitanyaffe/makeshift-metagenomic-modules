@@ -3,16 +3,16 @@
 #####################################################################################################
 
 units:=manager.mk gzip.mk trimmomatic.mk duplicates.mk split.mk deconseq.mk pair.mk \
-clean.mk libs_merge.mk libs_multi.mk libs_stats.mk libs_export.mk libs_plot.mk
-
-$(call _register_module,libs,$(units),)
+clean.mk libs_merge.mk libs_multi.mk libs_stats.mk libs_export.mk libs_plot.mk libs_top.mk
 
 LIBS_VER?=v1.03
+$(call _register_module,libs,LIBS_VER,$(units))
 
 #####################################################################################################
 # version log
 #####################################################################################################
 
+# TBD v1.04: added support for single-sided library
 # v1.03: solved bug in counting trimmomatic output (non_paired were included)
 
 #####################################################################################################
@@ -32,6 +32,10 @@ BIN_DIR?=$(GCP_MOUNT_BASE_DIR)/bin
 # LIB_INPUT_R1_GZ_FN: Comma-separated list of R1 fastq compressed files, relative path in input dir
 # LIB_INPUT_R2_GZ_FN: Same for R2
 #####################################################################################################
+
+# PE: pair-ended, fully supported
+# SE: single-sided libraries are converted to pair-ended by splitting reads in the middle
+LIB_MODE?=PE
 
 # lib id
 LIB_ID?=specify_lib_id
@@ -56,7 +60,7 @@ LIB_WORK_DIR?=$(LIB_BASE_DIR)/work
 LIB_INFO_DIR?=$(LIB_BASE_DIR)/info
 LIB_OUT_DIR?=$(LIB_BASE_DIR)/out
 
-LIBS_FDIR?=$(OUTPUT_DIR)/figures/libs
+LIBS_FDIR?=$(FIGURE_DIR)/libs/$(LIBS_VER)
 
 #####################################################################################################
 # input table of all libraries
@@ -108,6 +112,9 @@ LIBS_DISK_TYPE?=pd-ssd
 
 # use up to this number of reads from each library (in millions)
 LIBS_MAX_MREADS?=25
+
+# discard reads shorter than threshold, used only in SE mode
+LIBS_FASTQ_MIN_LENGTH?=80
 
 # half from each read side 
 LIBS_FASTQ_READ_COUNT=$(shell echo $(LIBS_MAX_MREADS)\*1000000 | bc)
@@ -313,7 +320,10 @@ PP_COUNT_DECONSEQ_CHUCK?=$(DECONSEQ_DIR)/.count_deconseq
 # collect stats
 #####################################################################################################
 
-MULTI_STATS_DIR?=$(LIBS_MULTI_DIR)/stats
+# place post files here
+LIBS_POST_DIR?=$(LIBS_MULTI_DIR)/post
+
+MULTI_STATS_DIR?=$(LIBS_POST_DIR)/stats
 
 STATS_READS_COUNTS?=$(MULTI_STATS_DIR)/read_counts.txt
 STATS_READS_YIELD?=$(MULTI_STATS_DIR)/read_yield.txt
@@ -336,12 +346,6 @@ LIB_STATS_FDIR?=$(LIBS_FDIR)/stats/$(LIB_STATS_LABEL)
 LIB_STATS_LABELS?=$(LIB_STATS_IDS)
 
 #####################################################################################################
-# export data
-#####################################################################################################
-
-LIBS_EXPORT_DIR?=$(BASE_EXPORT_DIR)/libs_$(LIBS_VER)
-
-#####################################################################################################
 # select high-quality libs
 #####################################################################################################
 
@@ -358,7 +362,7 @@ LIBS_SELECT_MIN_DUPLICATE_READ_YIELD?=80
 LIBS_SELECT_MIN_HUMAN_READ_YIELD?=80
 
 # output here
-LIBS_SELECT_DIR?=$(LIBS_MULTI_DIR)/select
+LIBS_SELECT_DIR?=$(LIBS_POST_DIR)/select
 
 # libs that passed filter
 LIBS_SELECT_TABLE?=$(LIBS_SELECT_DIR)/libs_select.txt
@@ -366,4 +370,13 @@ LIBS_SELECT_TABLE?=$(LIBS_SELECT_DIR)/libs_select.txt
 # libs that failed filters or are completely missing
 LIBS_MISSING_TABLE?=$(LIBS_SELECT_DIR)/libs_missing.txt
 
+#####################################################################################################
+# export data
+#####################################################################################################
 
+LIBS_EXPORT_DIR?=$(BASE_EXPORT_DIR)/libs_$(LIBS_VER)
+
+LIBS_EXPORT_VARS?=\
+STATS_READS_COUNTS STATS_READS_YIELD \
+STATS_BPS_COUNTS STATS_BPS_YIELD \
+STATS_DUPS

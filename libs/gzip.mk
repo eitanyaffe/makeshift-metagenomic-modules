@@ -5,10 +5,21 @@ $(LIB_INPUT_DONE):
 		cp $X $(LIB_INPUT_DIR)/R1.fastq.gz && \
 		pigz -c -d -p $(PIGZ_THREADS) $(LIB_INPUT_DIR)/R1.fastq.gz \
 			>> $(LIB_INPUT_DIR)/merged_R1.fastq && rm $(LIB_INPUT_DIR)/R1.fastq.gz; $(ASSERT); )
+
+ifeq ($(LIB_MODE),PE)
 	$(foreach X,$(LIB_INPUT_R2_GZ),\
 		cp $X $(LIB_INPUT_DIR)/R2.fastq.gz && \
 		pigz -c -d -p $(PIGZ_THREADS) $(LIB_INPUT_DIR)/R2.fastq.gz \
 			>> $(LIB_INPUT_DIR)/merged_R2.fastq && rm $(LIB_INPUT_DIR)/R2.fastq.gz; $(ASSERT); )
+else
+	mv $(LIB_INPUT_DIR)/merged_R1.fastq $(LIB_INPUT_DIR)/merged.fastq
+	perl $(_md)/pl/split_read_sides.pl \
+		$(LIB_INPUT_DIR)/merged.fastq \
+		$(LIBS_FASTQ_READ_COUNT) \
+		$(LIBS_FASTQ_MIN_LENGTH) \
+		$(LIB_INPUT_DIR)/merged_R1.fastq \
+		$(LIB_INPUT_DIR)/merged_R2.fastq
+endif
 	perl $(_md)/pl/subsample_pair.pl \
 		$(LIBS_FASTQ_READ_COUNT) \
 		$(LIBS_SUBSAMPLE_SEED) \
@@ -18,7 +29,10 @@ $(LIB_INPUT_DONE):
 		$(LIBS_INPUT_R2) \
 		$(LIBS_SUBSAMPLE_STATS)
 ifeq ($(LIBS_PURGE_TEMP),T)
-	rm $(LIB_INPUT_DIR)/merged_R1.fastq $(LIB_INPUT_DIR)/merged_R2.fastq
+	rm -rf \
+		$(LIB_INPUT_DIR)/merged.fastq \
+		$(LIB_INPUT_DIR)/merged_R1.fastq \
+		$(LIB_INPUT_DIR)/merged_R2.fastq
 endif
 	$(_end_touch)
 lib_extract_base: $(LIB_INPUT_DONE)

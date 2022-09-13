@@ -4,9 +4,10 @@
 
 units=genes_prodigal.mk genes_uniref.mk genes_diamond.mk genes_blast_nt.mk genes_GO.mk \
 genes_bins.mk genes_rna.mk genes_manager.mk genes_coverage.mk genes_collect.mk \
-genes_export.mk
+genes_export.mk genes_top.mk
 
-$(call _register_module,genes,$(units),,)
+GENES_VER?=v1.01
+$(call _register_module,genes,GENES_VER,$(units))
 
 #####################################################################################################
 # input and databases locations
@@ -20,7 +21,6 @@ GENES_FASTA_INPUT?=$(ASSEMBLY_CONTIG_FILE)
 #####################################################################################################
 
 # output directory
-GENES_VER?=v1.01
 GENES_ROOT_DIR?=$(OUTPUT_DIR)/genes/$(GENES_VER)
 
 # multiple assemblies
@@ -148,9 +148,6 @@ UNIREF_RAW_OFN?=$(UNIREF_DIR)/raw_table
 UNIREF_OFN_UNIQUE?=$(UNIREF_DIR)/table_uniq
 UNIREF_GENE_TAX_TABLE?=$(UNIREF_DIR)/table_uniq_taxa
 
-# final annotated table, with GO
-UNIREF_GENE_GO?=$(UNIREF_DIR)/table_GO
-
 TOP_IDENTITY_RATIO=2
 TOP_IDENTITY_DIFF=5
 UNIREF_TOP?=$(UNIREF_DIR)/top_uniref_top
@@ -159,25 +156,30 @@ UNIREF_TOP?=$(UNIREF_DIR)/top_uniref_top
 UNIREF_POOR_ANNOTATION?="uncharacterized_protein hypothetical_protein MULTISPECIES:_hypothetical_protein Putative_uncharacterized_protein"
 UNIREF_STATS?=$(UNIREF_DIR)/gene_stats
 
+# final annotated table, with GO
+UNIREF_GENE_DIR?=$(UNIREF_DIR)/GO
+UNIREF_GENE_GO?=$(UNIREF_GENE_DIR)/table_GO
+
 #####################################################################################################
 # Gene Ontology
 #####################################################################################################
 
+# GO database is located alongside uniref100
+GO_BASE_DIR?=$(UNIREF_DB_ROOT_DIR)/GO
+
 # GO table from http://purl.obolibrary.org/obo/go/go-basic.obo
 GO_OBO_ID?=2019-03-14
-GO_BASIC_OBO?=/relman01/shared/databases/GO/go-basic.obo-$(GO_OBO_ID)
+GO_BASIC_OBO?=$(GO_BASE_DIR)/go-basic.obo-$(GO_OBO_ID)
 
 # UniProt to GO: ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/UNIPROT/goa_uniprot_all.gaf.gz
 GOA_UNIPROT_ID?=2019-03-14
-GOA_UNIPROT_TABLE?=/relman01/shared/databases/GO/goa_uniprot/$(GOA_UNIPROT_ID)/goa_uniprot_all.gaf
-UNIPROT2GO_LOOKUP?=/relman01/shared/databases/GO/goa_uniprot/$(GOA_UNIPROT_ID)/goa_uniprot_all.gaf.parsed
+GOA_UNIPROT_DIR?=$(GO_BASE_DIR)/goa_uniprot/$(GOA_UNIPROT_ID)
+GOA_UNIPROT_TABLE?=$(GOA_UNIPROT_DIR)/goa_uniprot_all.gaf
+UNIPROT2GO_LOOKUP?=$(GOA_UNIPROT_DIR)/goa_uniprot_all.gaf.parsed
 
 # UniParc table: ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/uniparc/uniparc_all.xml.gz
 UNIPARC_ID?=March_2019
-UNIPARC_XML_IFN?=/relman03/work/users/eitany/uniparc/$(UNIPARC_ID)/uniparc_all.xml
-
-# GO database is located alongside uniref100
-GO_BASE_DIR?=$(UNIREF_DB_ROOT_DIR)/GO
+UNIPARC_XML_IFN?=$(UNIREF_DB_ROOT_DIR)/Uniparc/$(UNIPARC_ID)/uniparc_all.xml
 
 GO_ID?=2019_03
 GO_DIR?=$(GO_BASE_DIR)/$(GO_ID)
@@ -253,23 +255,27 @@ GENES_COVERAGE_GENE_MATRIX?=$(GENES_COVERAGE_OUT_DIR)/gene.matrix
 GENES_COVERAGE_MULTI_DIR?=$(GENES_ROOT_DIR)/coverage_assembly_sets/$(GENES_MULTI_LABEL)
 
 #####################################################################################################
-# export gene data
-#####################################################################################################
-
-GENES_EXPORT_DIR?=$(BASE_EXPORT_DIR)/genes_$(GENES_VER)
-
-#####################################################################################################
 # genes_collect.mk: collect tables across assemblies
 #####################################################################################################
 
-GENES_COLLECT_VER?=v1
+GENES_COLLECT_VER?=v3
 GENES_COLLECT_ASSEMBLY_ID?=MERGE/$(GENES_COLLECT_VER)
 GENES_COLLECT_DIR?=$(GENES_ROOT_DIR)/$(GENES_COLLECT_ASSEMBLY_ID)
 UNIREF_COLLECT_DIR?=$(UNIREF_ROOT_DIR)/$(GENES_COLLECT_ASSEMBLY_ID)
 
 # basic tables, without trajectory data 
 GENES_COLLECT_VARS?=PRODIGAL_GENE_TABLE
-UNIREF_COLLECT_VARS?=UNIREF_GENE_TAX_TABLE
+UNIREF_COLLECT_VARS?=UNIREF_GENE_TAX_TABLE UNIREF_GENE_GO
 
 $(call _sub_variables,$(GENES_COLLECT_VARS),_MERGE,$(ASSEMBLY_ID),$(GENES_COLLECT_ASSEMBLY_ID))
 $(call _sub_variables,$(UNIREF_COLLECT_VARS),_MERGE,$(ASSEMBLY_ID),$(GENES_COLLECT_ASSEMBLY_ID))
+
+#####################################################################################################
+# export gene data
+#####################################################################################################
+
+GENES_EXPORT_DIR?=$(BASE_EXPORT_DIR)/genes_$(GENES_VER)
+
+GENES_EXPORT_VARS?=\
+GENE_FASTA_AA GENE_FASTA_NT \
+GENE_TABLE UNIREF_GENE_TAX_TABLE UNIREF_GENE_GO

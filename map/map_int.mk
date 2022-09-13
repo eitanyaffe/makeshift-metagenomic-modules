@@ -1,9 +1,8 @@
 units:=map_input.mk map_index.mk map_chunks.mk map_merge.mk map_manager.mk \
-map_multi.mk map_stats.mk map_export.mk
-
-$(call _register_module,map,$(units),,)
+map_multi.mk map_stats.mk map_export.mk map_top.mk
 
 MAP_VER?=v1.05
+$(call _register_module,map,MAP_VER,$(units))
 
 #####################################################################################################
 # tools
@@ -67,7 +66,7 @@ MAP_INPUT_COMPRESSED?=T
 MAP_ROOT_DIR?=$(OUTPUT_DIR)/map/$(MAP_VER)
 MAP_BASE_DIR?=$(MAP_ROOT_DIR)/$(ASSEMBLY_ID)
 
-MAP_FDIR?=$(OUTPUT_DIR)/figures/map
+MAP_FDIR?=$(FIGURE_DIR)/map/$(MAP_VER)
 
 # base library output dir
 MAP_DIR?=$(MAP_BASE_DIR)/libs/$(MAP_LIB_ID)
@@ -251,12 +250,6 @@ MAP_STATS_PAIRED?=$(MAP_MULTI_STATS_DIR)/paired_stats.txt
 MAP_PURGE_TEMP?=T
 
 #####################################################################################################
-# export data
-#####################################################################################################
-
-MAP_EXPORT_DIR?=$(BASE_EXPORT_DIR)/map_$(MAP_VER)
-
-#####################################################################################################
 # mutliple libs per assembly
 #####################################################################################################
 
@@ -278,3 +271,12 @@ MAP_LIBS_TABLE?=$(MAP_SET_DIR)/libs_table.txt
 MAP_MULTI_LABEL?=$(ASSEMBLY_MULTI_LABEL)
 MAP_MULTI_DIR?=$(MAP_ROOT_DIR)/assembly_sets/$(MAP_MULTI_LABEL)
 MAP_ASSEMBLY_TABLE?=$(ASSEMBLY_TABLE)
+
+#####################################################################################################
+# export data
+#####################################################################################################
+
+MAP_EXPORT_DIR?=$(BASE_EXPORT_DIR)/map_$(MAP_VER)
+
+#MAP_EXPORT_VARS?=MAP_STATS_BWA MAP_STATS_FILTER MAP_STATS_PAIRED
+MAP_EXPORT_VARS?=

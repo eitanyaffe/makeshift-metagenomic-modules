@@ -5,6 +5,7 @@
 SGCC_INPUT_DONE?=$(SGCC_LIB_WORK_DIR)/.done_input
 $(SGCC_INPUT_DONE):
 	$(call _start,$(SGCC_LIB_WORK_DIR))
+	rm -rf $(SGCC_LIB_WORK_DIR)/*
 	cp $(SGCC_INPUT_R1_GZ) $(SGCC_SEQ_R1_GZ)
 	cp $(SGCC_INPUT_R2_GZ) $(SGCC_SEQ_R2_GZ)
 	pigz -d -p $(SGCC_PIGZ_THREADS) $(SGCC_SEQ_R1_GZ)

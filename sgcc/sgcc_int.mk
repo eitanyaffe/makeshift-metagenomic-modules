@@ -1,7 +1,6 @@
-units=sgcc_manager.mk sgcc.mk sgcc_export.mk
-$(call _register_module,sgcc,$(units),)
-
+units=sgcc_manager.mk sgcc.mk sgcc_top.mk sgcc_export.mk
 SGCC_VER?=v1.08
+$(call _register_module,sgcc,SGCC_VER,$(units))
 
 #####################################################################################################
 # basic input/output
@@ -114,3 +113,5 @@ SGCC_STATS_TABLE=$(SGCC_COMPARE_DIR)/read_counts.summary
 #####################################################################################################
 
 SGCC_EXPORT_DIR?=$(BASE_EXPORT_DIR)/sgcc_$(SGCC_VER)
+
+SGCC_EXPORT_VARS?=SGCC_COMPARE_TABLE SGCC_STATS_TABLE

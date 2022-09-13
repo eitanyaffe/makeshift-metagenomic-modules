@@ -2,11 +2,11 @@
 # register module
 #####################################################################################################
 
-units:=assembly_input.mk megahit.mk assembly_manager.mk assembly_stats.mk assembly_export.mk
-
-$(call _register_module,assembly,$(units),)
+units:=assembly_input.mk megahit.mk assembly_manager.mk assembly_stats.mk assembly_export.mk \
+assembly_top.mk
 
 ASSEMBLY_VER?=v1.02
+$(call _register_module,assembly,ASSEMBLY_VER,$(units))
 
 #####################################################################################################
 # multiple assemblies
@@ -60,7 +60,7 @@ ASSEMBLY_ID?=assembly1
 ASSEMBLY_BASE_DIR?=$(OUTPUT_DIR)/assembly/$(ASSEMBLY_VER)
 ASSEMBLY_DIR?=$(ASSEMBLY_BASE_DIR)/$(ASSEMBLY_ID)/$(ASSEMBLY_TAG)
 
-ASSEMBLY_FDIR?=$(OUTPUT_DIR)/figures/assembly
+ASSEMBLY_FDIR?=$(FIGURE_DIR)/assembly/$(ASSEMBLY_VER)
 
 ASSEMBLY_INFO_DIR?=$(ASSEMBLY_DIR)/info
 ASSEMBLY_WORK_DIR?=$(ASSEMBLY_DIR)/work
@@ -172,3 +172,6 @@ ASSEMBLY_STATS_TABLE?=$(ASSEMBLY_MULTI_STATS_DIR)/summary.txt
 #####################################################################################################
 
 ASSEMBLY_EXPORT_DIR?=$(BASE_EXPORT_DIR)/assembly_$(ASSEMBLY_VER)
+
+ASSEMBLY_EXPORT_VARS?=\
+ASSEMBLY_CONTIG_FILE ASSEMBLY_CONTIG_TABLE

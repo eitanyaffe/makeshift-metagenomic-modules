@@ -1,7 +1,7 @@
 
 S_SGCC_TOP_DONE?=$(TOP_WORK_DIR)/.done_sgcc_$(_module_version)
 $(S_SGCC_TOP_DONE):
-	$(_start)
+	$(call _start,$(TOP_WORK_DIR))
 	$(MAKE) m=par par \
 		PAR_WORK_DIR=$(TOP_WORK_DIR)/sgcc \
 		PAR_MODULE=sgcc \

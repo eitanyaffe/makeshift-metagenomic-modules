@@ -21,7 +21,7 @@ genes_cov_lib: $(GENES_COVERAGE_LIB_DONE)
 # all libs
 S_GENES_COVERAGE_LIBS_DONE?=$(GENES_COVERAGE_INFO_DIR)/.done_libs
 $(S_GENES_COVERAGE_LIBS_DONE):
-	$(_start)
+	$(call _start,$(GENES_COVERAGE_INFO_DIR))
 	$(MAKE) m=par par_tasks_complex \
 		PAR_MODULE=genes \
 		PAR_NAME=genes_cov_libs \
@@ -72,7 +72,7 @@ s_genes_cov_mat: $(S_GENES_COVERAGE_MATRIX_DONE)
 # compute gene coverage matrices
 GENES_MULTI_COV_DONE?=$(GENES_COVERAGE_MULTI_DIR)/.done_genes_matrices
 $(GENES_MULTI_COV_DONE):
-	$(_start)
+	$(call _start,$(GENES_COVERAGE_MULTI_DIR))
 	$(MAKE) m=par par_tasks_complex \
 		PAR_MODULE=genes \
 		PAR_NAME=genes_cov_task \

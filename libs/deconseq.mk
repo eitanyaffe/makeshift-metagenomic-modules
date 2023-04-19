@@ -1,3 +1,7 @@
+# database for hg38 created following instructions on https://deconseq.sourceforge.net/manual.html#DB
+# 1. assembly used: https://ftp.ncbi.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.26_GRCh38/GCF_000001405.26_GRCh38_genomic.fna.gz
+# 2. cat GCF_000001405.26_GRCh38_genomic.fna | perl -p -e 's/N\n/N/' | perl -p -e 's/^N+//;s/N+$//;s/N{200,}/\n>split\n/' > hs_ref_GRCh38.fa
+
 DECONSEQ_DONE?=$(DECONSEQ_DIR)/.done
 $(DECONSEQ_DONE):
 	$(call _start,$(DECONSEQ_DIR))

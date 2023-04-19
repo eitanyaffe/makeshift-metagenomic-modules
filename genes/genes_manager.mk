@@ -10,7 +10,7 @@ s_genes:
 # predict genes
 GENES_MULTI_DONE?=$(GENES_MULTI_DIR)/.done_genes
 $(GENES_MULTI_DONE):
-	$(_start)
+	$(call _start,$(GENES_MULTI_DIR))
 	$(MAKE) m=par par_tasks_complex \
 		PAR_MODULE=genes \
 		PAR_NAME=genes_task \

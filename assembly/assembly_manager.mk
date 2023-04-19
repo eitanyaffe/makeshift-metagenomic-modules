@@ -19,10 +19,11 @@ $(S_INPUT_DONE):
 	$(_end_touch)
 s_assembly_input: $(S_INPUT_DONE)
 
-
 S_ASSEMBLY_DONE?=$(ASSEMBLY_INFO_DIR)/.done_assembly
 $(S_ASSEMBLY_DONE): $(S_INPUT_DONE)
 	$(_start)
+	$(MAKE) m=par par_delete \
+		PAR_REMOVE_PATHS=$(ASSEMBLY_WORK_DIR)
 	$(MAKE) m=par par \
 		PAR_WORK_DIR=$(ASSEMBLY_INFO_DIR) \
 		PAR_MODULE=assembly \
@@ -32,7 +33,7 @@ $(S_ASSEMBLY_DONE): $(S_INPUT_DONE)
 		PAR_MACHINE=$(ASSEMBLY_MACHINE) \
 		PAR_DISK_GB=$(ASSEMBLY_DISK_GB) \
 		PAR_DISK_TYPE=$(ASSEMBLY_DISK_TYPE) \
-		PAR_PREEMTIBLE=3 \
+		PAR_PREEMTIBLE=5 \
 		PAR_MAKEFLAGS="$(PAR_MAKEOVERRIDES)"
 	$(_end_touch)
 s_assembly_main: $(S_ASSEMBLY_DONE)

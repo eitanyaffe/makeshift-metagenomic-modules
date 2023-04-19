@@ -10,6 +10,11 @@ do
     kill -STOP $pid
     echo Pausing megahit run and delocalizing $1
     sleep 10s
+
+    # first without the checkpoints file
+    gsutil -mq rsync -r -x ".*\.dsub.*" -x "checkpoints.txt" $2 $3
+
+    # finally add the checkpoints file
     gsutil -mq rsync -r -x ".*\.dsub.*" $2 $3
     kill -CONT $pid
     echo megahit work resumed

@@ -3,9 +3,8 @@
 use strict;
 use warnings FATAL => qw(all);
 
-
 if ($#ARGV == -1) {
-	print STDERR "usage: $0 <ifn> <table> <ofn>\n";
+	print STDERR "usage: $0 <ifn> <max_reads> <min_length> <ofn1> <ofn2>\n";
 	exit 1;
 }
 
@@ -44,8 +43,8 @@ while (my $line = <IN>) {
 	my $score1 = substr($score, 0, $middle);
 
 	# second half
-	my $seq2 = substr($seq, $middle, $len);
-	my $score2 = substr($score, $middle, $len);
+	my $seq2 = get_rc(substr($seq, $middle, $len));
+	my $score2 = reverse(substr($score, $middle, $len));
 
 	print O1 $header, "\n", $seq1, "\n", "+", "\n", $score1, "\n";
 	print O2 $header, "\n", $seq2, "\n", "+", "\n", $score2, "\n";
@@ -55,3 +54,11 @@ while (my $line = <IN>) {
 close(O1);
 close(O2);
 close(IN);
+
+# returns reverse-complement of the argument
+sub get_rc {
+    my ($str) = @_;
+    my $rr = reverse($str);
+    $rr =~ tr/NATGCnatgc/NTACGntacg/;
+    return ($rr);
+}

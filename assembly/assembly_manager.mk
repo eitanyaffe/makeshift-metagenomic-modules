@@ -49,7 +49,7 @@ s_assembly:
 		PAR_NAME=assembly_single \
 		PAR_ODIR_VAR=ASSEMBLY_INFO_DIR \
 		PAR_TARGET=s_assembly_main \
-		PAR_PREEMTIBLE=3 \
+		PAR_PREEMTIBLE=0 \
 		PAR_MAKEFLAGS="$(PAR_MAKEOVERRIDES)"
 
 #####################################################################################################
@@ -76,7 +76,7 @@ $(ASSEMBLY_MULTI_DONE): $(S_ASSEMBLY_TABLE_DONE)
 		PAR_TASK_ITEM_TABLE=$(ASSEMBLY_TABLE) \
 		PAR_TASK_ITEM_VAR=ASSEMBLY_ID \
 		PAR_TASK_ODIR_VAR=ASSEMBLY_INFO_DIR \
-		PAR_PREEMTIBLE=3 \
+		PAR_PREEMTIBLE=0 \
 		PAR_MAKEFLAGS="$(PAR_MAKEOVERRIDES)"
 	$(_end_touch)
 s_assemblies: $(ASSEMBLY_MULTI_DONE)

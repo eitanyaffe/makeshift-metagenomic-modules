@@ -18,20 +18,20 @@ collect.stats=function(ifn, idir, ofn.bwa, ofn.filter, ofn.paired)
         for (mid in mids) { 
             cdf = read.delim(paste0(idir, "/", aid, "/libs/", mid, "/split/chunk.tab"))
             cids = cdf$chunk
-            input.count = sum(cdf$reads)
-            rr.ii = data.frame(assembly=aid, sample=mid, input=input.count)
+            input.count = 2 * sum(cdf$reads)
             for (i in 1:length(cids)) {
                 cid = cids[i]
-                bwa = read.delim(paste0(idir, "/", aid, "/libs/", mid, "/chunks/", cid, "/R1.stats"))
+                bwa1 = read.delim(paste0(idir, "/", aid, "/libs/", mid, "/chunks/", cid, "/R1.stats"))
+                bwa2 = read.delim(paste0(idir, "/", aid, "/libs/", mid, "/chunks/", cid, "/R2.stats"))
                 filter1 = read.delim(paste0(idir, "/", aid, "/libs/", mid, "/chunks/", cid, "/R1.filtered.stats"))
                 filter2 = read.delim(paste0(idir, "/", aid, "/libs/", mid, "/chunks/", cid, "/R2.filtered.stats"))
                 paired = read.delim(paste0(idir, "/", aid, "/libs/", mid, "/chunks/", cid, "/paired.stats"))
                 if (i == 1) {
-                    rr.bwa.ii = bwa
+                    rr.bwa.ii = add.f(bwa1, bwa2)
                     rr.filter.ii = add.f(filter1, filter2)
                     rr.paired.ii = paired
                 } else {
-                    rr.bwa.ii = add.f(bwa, rr.bwa.ii)
+                    rr.bwa.ii = add.f(add.f(bwa1, bwa2), rr.bwa.ii)
                     rr.filter.ii = add.f(add.f(filter1, filter2), rr.filter.ii)
                     rr.paired.ii = add.f(paired, rr.paired.ii) 
                 }
@@ -68,4 +68,19 @@ plot.stats=function(ifn.bwa, ifn.filter, ifn.paired, fdir)
 
     my.plot.ecdf(title="4_paired", type="%", x=100 * paired$ok / paired$total)
 
+    if (any(filter$assembly != paired$assembly) || any(filter$sample != paired$sample)) {
+        stop("internal")
+    }
+
+    x = (filter$ok / bwa$input)^2
+    y = paired$ok / (bwa$input/2)
+    fig.start(fdir=fdir, type="pdf", width=4, height=4,
+              ofn=paste(fdir, "/5_pair_scatter.pdf", sep=""))
+    lim = range(c(x, y))
+    plot(x, y, pch=19, cex=0.1, xlim=lim, ylim=lim,
+         main="map independence", ylab="ok pair fraction", xlab="(ok side fraction)^2")
+    grid()
+    abline(a=0, b=1, lty=2)
+    fig.end()
+    
 }

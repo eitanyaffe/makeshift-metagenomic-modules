@@ -50,7 +50,6 @@ map_merge: $(MERGE_BAM_DONE) $(MERGE_BAM_SIDES_DONE) $(MERGE_CHUNKS_DONE)
 # assembly output
 #################################################################################
 
-
 # create single index file
 MAP_UNION_DONE?=$(MAP_UNION_DIR)/.done_union
 $(MAP_UNION_DONE):

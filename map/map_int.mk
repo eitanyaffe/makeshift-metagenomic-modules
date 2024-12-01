@@ -41,6 +41,10 @@ MAP_CHUNK_DISK_GB?=32
 MAP_MERGE_DISK_GB?=256
 MAP_UNION_DISK_GB?=512
 
+# chunk tries
+MAP_CHUNCK_PREEMTIBLE?=1
+MAP_INPUT_PREEMTIBLE?=0
+
 #####################################################################################################
 # input
 #####################################################################################################
@@ -196,6 +200,9 @@ MAP_NON_PAIRED_R2?=$(MAP_OUT_DIR)/non_paired_R2.tab
 #####################################################################################################
 # union (assembly output)
 #####################################################################################################
+
+# single bam needed for DomCycle and is turned off by default
+MAP_PERFORM_UNION?=F
 
 # bwa index file
 MAP_UNION_DIR?=$(MAP_BASE_DIR)/union

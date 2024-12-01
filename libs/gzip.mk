@@ -1,6 +1,7 @@
 LIB_INPUT_DONE?=$(LIB_INPUT_DIR)/.done_gunzip
 $(LIB_INPUT_DONE):
 	$(call _start,$(LIB_INPUT_DIR))
+	rm -f $(LIB_INPUT_DIR)/merged_R1.fastq $(LIB_INPUT_DIR)/merged_R2.fastq
 	$(foreach X,$(LIB_INPUT_R1_GZ),\
 		cp $X $(LIB_INPUT_DIR)/R1.fastq.gz && \
 		pigz -c -d -p $(PIGZ_THREADS) $(LIB_INPUT_DIR)/R1.fastq.gz \

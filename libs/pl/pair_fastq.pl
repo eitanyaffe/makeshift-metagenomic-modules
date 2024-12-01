@@ -80,6 +80,7 @@ foreach my $key (keys %reads) {
 	$R1_count++;
     } else {
 	for (my $i=0; $i<4; $i++) {
+	    print "$key, i=$i" if (!defined($reads{$key}->{R2}->{$i}));
 	    print OUT_NON_PAIRED_R2 $reads{$key}->{R2}->{$i}, "\n";
 	}
 	$R2_count++;

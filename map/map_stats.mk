@@ -1,4 +1,4 @@
-STATS_DONE?=$(MAP_MULTI_STATS_DIR)/.done
+STATS_DONE?=$(MAP_MULTI_STATS_DIR)/.done_stats
 $(STATS_DONE):
 	$(call _start,$(MAP_MULTI_STATS_DIR))
 	$(_R) $(_md)/R/map_stats.r collect.stats \

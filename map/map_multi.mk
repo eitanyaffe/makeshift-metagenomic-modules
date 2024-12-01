@@ -57,6 +57,12 @@ s_map_union: $(S_MAP_UNION_DONE)
 # map libs of all assemblies
 ####################################################################################
 
+ifeq ($(MAP_PERFORM_UNION),T)
+MAP_TARGET?=s_map_union
+else
+MAP_TARGET?=s_map_set
+endif
+
 S_MAP_ALL_DONE?=$(MAP_MULTI_DIR)/.done_map_all
 $(S_MAP_ALL_DONE):
 	$(call _start,$(MAP_MULTI_DIR))
@@ -64,7 +70,7 @@ $(S_MAP_ALL_DONE):
 		PAR_MODULE=map \
 		PAR_NAME=map_assembly \
 		PAR_WORK_DIR=$(MAP_MULTI_DIR) \
-		PAR_TARGET=s_map_union \
+		PAR_TARGET=$(MAP_TARGET) \
 		PAR_TASK_ITEM_TABLE=$(MAP_ASSEMBLY_TABLE) \
 		PAR_TASK_ITEM_VAR=ASSEMBLY_ID \
 		PAR_TASK_ODIR_VAR=MAP_SET_DIR \

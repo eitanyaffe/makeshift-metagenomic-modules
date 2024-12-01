@@ -18,13 +18,13 @@ plot.stats=function(ifn.reads.count, ifn.reads.yield, ifn.bps.count, ifn.bps.yie
                   ofn=paste(fdir, "/", field, "_", type, "_ecdf.pdf", sep=""))
         main = paste(field, type, "yield")
         main = if (!is.na(cutoff)) sprintf("%s\ncutoff=%.0f", main, cutoff) else main
-        plot(ecdf(df[,field]), main=main, ylab="fraction", xlab="yield (%)")
+        plot(ecdf(df[,field]), main=main, ylab="fraction", xlab=xlab)
         if (!is.na(cutoff)) abline(v=cutoff, col="gray", lty=3)
         fig.end()
     }
     
-    plot.f(df=read.count, field="final.m", type="reads", cutoff=min.read.count.m, xlab="bp count (G)")
-    plot.f(df=bp.count, field="final.g", type="bp", cutoff=NA, xlab="read count (M)")
+    plot.f(df=read.count, field="final.m", type="reads", cutoff=min.read.count.m, xlab="reads (M)")
+    plot.f(df=bp.count, field="final.g", type="bp", cutoff=NA, xlab="bps (G)")
     
     plot.f(df=read.yield, field="duplicate", type="reads", cutoff=min.dup.read.yield)
     plot.f(df=read.yield, field="deconseq", type="reads", cutoff=min.deconseq.read.yield)

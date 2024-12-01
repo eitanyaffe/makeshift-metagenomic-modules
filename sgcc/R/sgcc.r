@@ -9,7 +9,16 @@ make.table=function(ifn, idir, ofn)
     f1 = paste0(idir, "/", rr$SGCC_R1_GZ_FN)
     f2 = paste0(idir, "/", rr$SGCC_R2_GZ_FN)
     cat(sprintf("retrieving size for %d files\n", 2*dim(rr)[1]))
-    rr$SGCC_DISK_GB = 16 + 5 * round((file.info(f1)$size + file.info(f2)$size) / 10^9)
+    if (any(!file.exists(f1) | !file.exists(f2)) ) {
+        ii = which(!file.exists(f1))
+        if (length(ii) > 0)
+            cat(sprintf("missing R1 files:\n %s\n", paste(f1[ii], sep="", collapse="\n ")))
+        ii = which(!file.exists(f2))
+        if (length(ii) > 0)
+            cat(sprintf("missing R2 files:\n %s\n", paste(f2[ii], sep="", collapse="\n ")))
+        stop("one or more files not found")
+    }
+    rr$SGCC_DISK_GB = 32 + 5 * round((file.info(f1)$size + file.info(f2)$size) / 10^9)
     
     cat(sprintf("number of samples: %d\n", dim(rr)[1]))
     save.table(rr, ofn)

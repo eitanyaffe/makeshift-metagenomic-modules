@@ -9,7 +9,10 @@ $(call _register_module,sgcc,SGCC_VER,$(units))
 # base directory of input files
 SGCC_INPUT_DIR?=$(INPUT_DIR)
 
-SGCC_BASE_DIR?=$(OUTPUT_DIR)/sgcc/$(SGCC_VER)
+# kmer size
+SGCC_KMER_SIG?=101
+
+SGCC_BASE_DIR?=$(OUTPUT_DIR)/sgcc/$(SGCC_VER)/k$(SGCC_KMER_SIG)
 
 #####################################################################################################
 # single lib params
@@ -90,9 +93,6 @@ SGCC_FASTQ_COUNT=$(shell echo $(SGCC_FASTQ_MREADS)\*2000000 | bc)
 
 # sourmash installed via docker
 SOURMASH=sourmash
-
-# kmer size
-SGCC_KMER_SIG?=77
 
 SGCC_SIG?=$(SGCC_LIB_WORK_DIR)/sourmash.sig
 

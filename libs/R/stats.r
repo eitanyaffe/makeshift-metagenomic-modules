@@ -62,7 +62,12 @@ merge.dup.stats=function(ifn, ldir, ofn)
     max.multi = 100
     rr = data.frame(multi=1:max.multi)
     for (id in ids) {
-        dx = read.delim(paste0(ldir, "/", id, "/info/dup_complexity.table"))
+        fn = paste0(ldir, "/", id, "/info/dup_complexity.table")
+        if (!file.exists(fn)) {
+            cat(sprintf("no data for library: %s\n", id))
+            next
+        }
+        dx = read.delim(fn)
         ix = dx$multi>=max.multi
         mcount = sum(dx$count[ix])
         dx = dx[!ix,]

@@ -4,10 +4,13 @@ $(LIBS_MULTI_TABLE_DONE):
 	$(_R) R/libs_table.r make.table \
 		ifn=$(LIBS_INPUT_TABLE) \
 		idir=$(INPUT_DIR) \
+		limit.aids=$(LIBS_LIMIT_AIDS) \
+		limit.sids=$(LIBS_LIMIT_SIDS) \
 		ofn=$(LIBS_TABLE)
 	$(_end_touch)
 s_libs_table: $(LIBS_MULTI_TABLE_DONE)
 
+LIBS_MULTI_TARGET?=s_lib
 LIBS_MULTI_DONE?=$(LIBS_MULTI_DIR)/.done_run
 $(LIBS_MULTI_DONE): $(LIBS_MULTI_TABLE_DONE)
 	$(_start)
@@ -15,7 +18,7 @@ $(LIBS_MULTI_DONE): $(LIBS_MULTI_TABLE_DONE)
 		PAR_MODULE=libs \
 		PAR_NAME=lib_task \
 		PAR_WORK_DIR=$(LIBS_MULTI_DIR) \
-		PAR_TARGET=s_lib \
+		PAR_TARGET=$(LIBS_MULTI_TARGET) \
 		PAR_TASK_DIR=$(LIBS_MULTI_DIR) \
 		PAR_TASK_ITEM_TABLE=$(LIBS_TABLE) \
 		PAR_TASK_ITEM_VAR=LIB_ID \
@@ -31,9 +34,11 @@ s_libs: $(LIBS_MULTI_DONE)
 libs_post: libs_stats libs_dup_stats libs_select
 
 # collect stats after libs done
+S_LIBS_POST_SKIP_STEP?=F
 S_LIBS_POST_DONE?=$(LIBS_MULTI_DIR)/.done_libs_post
 $(S_LIBS_POST_DONE): $(LIBS_MULTI_DONE)
 	$(_start)
+ifeq ($(S_LIBS_POST_SKIP_STEP),F)
 	$(MAKE) m=par par \
 		PAR_WORK_DIR=$(LIBS_MULTI_DIR) \
 		PAR_MODULE=libs \
@@ -43,5 +48,6 @@ $(S_LIBS_POST_DONE): $(LIBS_MULTI_DONE)
 		PAR_PREEMTIBLE=0 \
 		PAR_WAIT=$(TOP_WAIT) \
 		PAR_MAKEFLAGS="$(PAR_MAKEOVERRIDES)"
+endif
 	$(_end_touch)
 s_libs_post: $(S_LIBS_POST_DONE)

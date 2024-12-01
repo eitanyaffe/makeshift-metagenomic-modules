@@ -3,7 +3,8 @@
 #####################################################################################################
 
 units:=manager.mk gzip.mk trimmomatic.mk duplicates.mk split.mk deconseq.mk pair.mk \
-clean.mk libs_merge.mk libs_multi.mk libs_stats.mk libs_export.mk libs_plot.mk libs_top.mk
+clean.mk libs_merge.mk libs_multi.mk libs_stats.mk libs_upload.mk \
+libs_export.mk libs_plot.mk libs_top.mk
 
 LIBS_VER?=v1.03
 $(call _register_module,libs,LIBS_VER,$(units))
@@ -25,6 +26,15 @@ OUTPUT_DIR?=$(GCP_MOUNT_BASE_DIR)/output
 
 # makeshift binary files
 BIN_DIR?=$(GCP_MOUNT_BASE_DIR)/bin
+
+# optional limit to specific assembly ids
+LIBS_LIMIT_AIDS?=NA
+
+# optional limit to specific library ids
+LIBS_LIMIT_SIDS?=NA
+
+# used for most tasks
+LIBS_BASIC_MACHINE?=n1-standard-2
 
 #####################################################################################################
 # Module input:
@@ -78,6 +88,12 @@ LIBS_INPUT_TABLE?=$(INPUT_DIR)/library_table.txt
 LIBS_INPUT_TABLE_LIB_FIELD?=lib
 LIBS_INPUT_TABLE_ASSEMBLY_FIELD?=assembly
 
+# optionaly labels (used in plotting in restrict) are in separate table
+# used currently for plot_response_complete in the dyn module
+# note that it does not have to be canonic 
+LIBS_LABEL_TABLE?=$(LIBS_CANON_TABLE)
+LIBS_LABEL_FIELD?=canon
+
 #####################################################################################################
 # multiple libs
 #####################################################################################################
@@ -103,6 +119,10 @@ LIBS_FILESIZE_MB?=3000
 LIBS_DISK_FACTOR?=10
 LIBS_DISK_GB?=$(shell echo "(1+$(LIBS_FILESIZE_MB)/1000)*$(LIBS_DISK_FACTOR)" | bc)
 
+# trimmomatic needs a bit more
+TRIMMO_DISK_FACTOR?=15
+TRIMMO_DISK_GB?=$(shell echo "(1+$(LIBS_FILESIZE_MB)/1000)*$(TRIMMO_DISK_FACTOR)" | bc)
+
 # pd-ssd or pd-standard
 LIBS_DISK_TYPE?=pd-ssd
 
@@ -119,7 +139,7 @@ LIBS_FASTQ_MIN_LENGTH?=80
 # half from each read side 
 LIBS_FASTQ_READ_COUNT=$(shell echo $(LIBS_MAX_MREADS)\*1000000 | bc)
 
-# random seed
+# random seed for library rarefaction
 LIBS_SUBSAMPLE_SEED?=1
 
 #####################################################################################################
@@ -295,6 +315,23 @@ FINAL_R2?=$(LIB_OUT_DIR)/R2.fastq.gz
 
 # remove temp files
 LIBS_PURGE_TEMP?=T
+
+#####################################################################################################
+# upload
+#####################################################################################################
+
+LIBS_UPLOAD_DIR?=$(LIBS_MULTI_DIR)/upload
+
+# preload for SRA
+LIBS_FTP_ADDRESS?=ftp-private.ncbi.nlm.nih.gov
+LIBS_FTP_USERNAME?=subftp
+
+# get parameters from the SRA submission portal, define in the project config file
+LIBS_FTP_PASSWORD?=NA
+LIBS_FTP_BASE_FOLDER?=NA
+LIBS_FTP_NAME?=$(PROJECT_NAME)
+
+LIBS_FTP_PARALLEL_COUNT?=16
 
 #####################################################################################################
 # stats

@@ -1,8 +1,14 @@
-make.table=function(ifn, idir, ofn)
+make.table=function(ifn, idir, limit.aids, limit.sids, ofn)
 {
     df = load.table(ifn)
+    
+    if (limit.aids != "NA")
+        df = df[is.element(df$assembly, limit.aids),]
+    if (limit.sids[1] != "NA")
+        df = df[is.element(df$lib, limit.sids),]
+    
     rr = data.frame(LIB_ID=df$lib)
-
+    
     is.paired = is.element("R2", names(df))
     
     rr$LIB_INPUT_R1_GZ_FN = df$R1

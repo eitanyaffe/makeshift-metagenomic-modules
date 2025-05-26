@@ -47,6 +47,8 @@ ASSEMBLY_INPUT_DISK_TYPE?=pd-standard
 ASSEMBLY_DISK_GB?=256
 ASSEMBLY_DISK_TYPE?=pd-ssd
 
+ASSEMBLY_INPUT_PREEMTIBLE?=3
+
 #####################################################################################################
 # basic assembly input and params
 #####################################################################################################

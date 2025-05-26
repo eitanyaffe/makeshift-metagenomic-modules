@@ -50,6 +50,9 @@ UNIREF_MULTI_DIR?=$(UNIREF_ROOT_DIR)/assembly_sets/$(UNIREF_MULTI_LABEL)
 # GCP params
 #####################################################################################################
 
+GENES_DISK_GB?=32
+GENES_MACHINE_TYPE?=e2-highmem-2
+
 UNIREF_DISK_GB?=256
 UNIREF_MACHINE_TYPE?=n2-standard-80
 

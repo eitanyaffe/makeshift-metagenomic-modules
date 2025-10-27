@@ -4,7 +4,7 @@
 
 units=genes_prodigal.mk genes_uniref.mk genes_diamond.mk genes_blast_nt.mk genes_GO.mk \
 genes_bins.mk genes_rna.mk genes_manager.mk genes_coverage.mk genes_collect.mk \
-genes_export.mk genes_top.mk
+genes_export.mk genes_top.mk genes_query.mk
 
 GENES_VER?=v1.01
 $(call _register_module,genes,GENES_VER,$(units))
@@ -272,6 +272,17 @@ UNIREF_COLLECT_VARS?=UNIREF_GENE_TAX_TABLE UNIREF_GENE_GO
 
 $(call _sub_variables,$(GENES_COLLECT_VARS),_MERGE,$(ASSEMBLY_ID),$(GENES_COLLECT_ASSEMBLY_ID))
 $(call _sub_variables,$(UNIREF_COLLECT_VARS),_MERGE,$(ASSEMBLY_ID),$(GENES_COLLECT_ASSEMBLY_ID))
+
+#####################################################################################################
+# query gene table
+#####################################################################################################
+
+GENES_QUERY_LABEL?=gyrA
+GENES_QUERY_PATTERN?="gyrase subunit A"
+GENES_QUERY_FIELD?=prot_desc
+GENES_QUERY_WINDOW?=10000
+
+GENES_QUERY_DIR?=$(GENES_ROOT_DIR)/query/$(GENES_QUERY_LABEL)
 
 #####################################################################################################
 # export gene data

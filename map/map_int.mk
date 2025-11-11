@@ -44,6 +44,10 @@ MAP_UNION_DISK_GB?=512
 # chunk tries
 MAP_CHUNCK_PREEMTIBLE?=1
 MAP_INPUT_PREEMTIBLE?=0
+MAP_INPUT_NON_PREEMTIBLE?=2
+
+# run how many assemblies in parallel
+MAP_BATCH_SIZE?=20
 
 #####################################################################################################
 # input

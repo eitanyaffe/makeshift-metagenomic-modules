@@ -53,7 +53,7 @@ UNIREF_MULTI_DIR?=$(UNIREF_ROOT_DIR)/assembly_sets/$(UNIREF_MULTI_LABEL)
 GENES_DISK_GB?=32
 GENES_MACHINE_TYPE?=e2-highmem-2
 
-UNIREF_DISK_GB?=256
+UNIREF_DISK_GB?=512
 UNIREF_MACHINE_TYPE?=n2-standard-80
 
 #####################################################################################################
@@ -122,7 +122,8 @@ DIAMOND_BLAST_PARAMS?=
 UNIREF_DB_ROOT_DIR?=$(GCP_MOUNT_BASE_DIR)/uniref
 
 # UniRef from ftp://ftp.uniprot.org/pub/databases/uniprot/uniref
-GENE_REF_ID?=2020_07
+#GENE_REF_ID?=2020_07
+GENE_REF_ID?=2025_12
 UNIREF_DB_BASE_DIR?=$(UNIREF_DB_ROOT_DIR)/UniRef100/$(GENE_REF_ID)
 
 GENE_REF_IFN?=$(UNIREF_DB_BASE_DIR)/uniref100.fasta

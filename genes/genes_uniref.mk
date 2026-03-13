@@ -5,7 +5,7 @@
 
 $(UNIREF_TABLE):
 	$(call _start,$(UNIREF_TABLE_DIR))
-	$(_md)/pl/make_uniref_table.pl \
+	perl $(_md)/pl/make_uniref_table.pl \
 		$(GENE_REF_IFN) \
 		$@
 	$(_end)
@@ -15,7 +15,7 @@ UNIREF_TAX_LOOKUP_DONE?=$(UNIREF_TABLE_DIR)/.done
 $(UNIREF_TAX_LOOKUP_DONE):
 	$(call _start,$(UNIREF_TABLE_DIR))
 	$(call _time,$(UNIREF_TABLE_DIR),lookup_table) \
-		$(_md)/pl/make_uniref_lookup.pl \
+		perl $(_md)/pl/make_uniref_lookup.pl \
 		$(GENE_REF_XML_IFN) \
 		$(UNIREF_TAX_LOOKUP)
 	$(_end_touch)
@@ -23,7 +23,7 @@ uniref_lookup: $(UNIREF_TAX_LOOKUP_DONE)
 
 $(UNIREF_GENE_TABLE): $(UNIREF_TABLE)
 	$(_start)
-	cat $(GENE_REF_IFN) | $(_md)/pl/uniref_summary.pl > $@
+	cat $(GENE_REF_IFN) | perl $(_md)/pl/uniref_summary.pl > $@
 	$(_end)
 uniref_gene_table: $(UNIREF_GENE_TABLE)
 

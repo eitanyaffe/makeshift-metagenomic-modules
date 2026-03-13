@@ -5,6 +5,7 @@ BLAST_RESULT_SAM?=$(BLAST_DIR)/blast.result.sam
 BLAST_INDEX_DONE?=$(DIAMOND_INDEX).done
 $(BLAST_INDEX_DONE):
 	$(_start)
+	mkdir -p $(UNIREF_DIAMOND_DB_DIR)
 	$(DIAMOND_BIN) makedb \
 		--in $(BLAST_TARGET_FASTA) \
 		-p $(DIAMOND_THREADS) \

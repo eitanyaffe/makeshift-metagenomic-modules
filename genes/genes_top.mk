@@ -63,7 +63,7 @@ top_genes_cov_all: $(S_GENES_COV_ALL_TOP_DONE)
 
 #####################################################################################################
 
-S_UNIREF_TOP_DONE?=$(TOP_WORK_DIR)/.done_uniref_$(ASSEMBLY_ID)_$(_module_version)
+S_UNIREF_TOP_DONE?=$(TOP_WORK_DIR)/.done_uniref_$(ASSEMBLY_ID)_$(GENE_REF_ID)_$(_module_version)
 $(S_UNIREF_TOP_DONE):
 	$(_start)
 	$(MAKE) m=par par \
@@ -78,7 +78,7 @@ $(S_UNIREF_TOP_DONE):
 	$(_end_touch)
 top_uniref: $(S_UNIREF_TOP_DONE)
 
-S_UNIREF_ALL_TOP_DONE?=$(TOP_WORK_DIR)/.done_uniref_all_$(_module_version)
+S_UNIREF_ALL_TOP_DONE?=$(TOP_WORK_DIR)/.done_uniref_all_$(GENE_REF_ID)_$(_module_version)
 $(S_UNIREF_ALL_TOP_DONE):
 	$(_start)
 	$(MAKE) m=par par \

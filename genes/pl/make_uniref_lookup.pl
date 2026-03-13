@@ -17,6 +17,8 @@ my $ofn = $ARGV[1];
 print "reading xml: $ifn\n";
 
 my %entry;      # Hashref containing infos on a entry
+my $entry_count = 0;
+my $progress_interval = 1000000;
 
 my $fh = IO::File->new($ifn) or die;
 
@@ -31,6 +33,8 @@ open(OUT, ">", $ofn) || die;
 print OUT "uniref\tuniprot_rep\tuniparc_rep\ttax_ids_rep\tuniprot\tuniparc\ttax_ids\n";
 $parser->parse($fh);
 close(OUT);
+
+print "completed: $entry_count entries\n";
 
 # The Handlers
 sub hdl_start{
@@ -80,6 +84,15 @@ sub hdl_end{
     "\t", join(";", keys %{$entry{uniparc}}),
     "\t", join(";", keys %{$entry{tax_ids}}),
     "\n";
+    
+    $entry_count++;
+    if ($entry_count % $progress_interval == 0) {
+	my $mem_free = `free -h | grep Mem | awk '{print \$4}'`;
+	my $disk_free = `df -h . | tail -1 | awk '{print \$4}'`;
+	chomp($mem_free);
+	chomp($disk_free);
+	print "processed: $entry_count entries, mem_free: $mem_free, disk_free: $disk_free\n";
+    }
 }
 
 sub hdl_def { }  # We just throw everything else

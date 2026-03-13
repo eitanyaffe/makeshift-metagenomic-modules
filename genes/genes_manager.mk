@@ -44,7 +44,7 @@ s_uniref:
 # both steps
 # s_uniref_GO: genes_uniref genes_GO
 
-UNIREF_MULTI_DONE?=$(UNIREF_MULTI_DIR)/.done_uniref
+UNIREF_MULTI_DONE?=$(UNIREF_MULTI_DIR)/.done_uniref_$(GENE_REF_ID)
 $(UNIREF_MULTI_DONE):
 	$(_start)
 	$(MAKE) m=par par_tasks_complex \

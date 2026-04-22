@@ -94,8 +94,17 @@ ASSEMBLY_INPUT_BASE_FASTQ?=$(ASSEMBLY_INPUT_DIR)/raw_reads.fastq
 # normalize style
 # none: keep all reads
 # subsample: sub-sample input using a max number of reads
-# khmer: use normalize-by-median.py
+# khmer: use normalize-by-median.py (NOT AVAILABLE: see note below)
 ASSEMBLY_INPUT_STYLE?=subsample
+
+# khmer availability:
+# dropped from mdocker-metagenomics-22.04 on 2026-04-20. upstream (dib-lab/khmer)
+# was archived in 2019; the last sdist (2.1.1) bootstraps setuptools from a
+# retired pypi.python.org path and no longer builds under modern pip.
+# selecting ASSEMBLY_INPUT_STYLE=khmer will fail at runtime with
+# "normalize-by-median.py: command not found". if we need k-mer-based
+# normalization again we'd have to pick a replacement (bbnorm from bbtools is
+# the usual swap) and wire it in.
 
 ####################################
 # subsample params

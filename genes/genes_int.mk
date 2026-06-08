@@ -4,7 +4,7 @@
 
 units=genes_prodigal.mk genes_uniref.mk genes_diamond.mk genes_blast_nt.mk genes_GO.mk \
 genes_bins.mk genes_rna.mk genes_manager.mk genes_coverage.mk genes_collect.mk \
-genes_export.mk genes_top.mk genes_query.mk
+genes_export.mk genes_top.mk genes_query.mk genes_index.mk
 
 GENES_VER?=v1.01
 $(call _register_module,genes,GENES_VER,$(units))
@@ -295,3 +295,15 @@ GENES_EXPORT_VARS?=\
 GENE_FASTA_AA GENE_FASTA_NT \
 GENE_TABLE \
 GENES_COVERAGE_GENE_MATRIX
+
+#####################################################################################################
+# genes_index.mk: index output files
+#####################################################################################################
+
+GENES_INDEX_DIR?=$(GENES_ROOT_DIR)/index/$(INDEX_VER)
+
+# per-assembly variables
+GENES_INDEX_ASSEMBLY_VARS?=PRODIGAL_GENE_TABLE UNIREF_GENE_TAX_TABLE PRODIGAL_NT PRODIGAL_AA
+
+# global (merged) variables
+GENES_INDEX_GLOBAL_VARS?=PRODIGAL_GENE_TABLE_MERGE UNIREF_GENE_TAX_TABLE_MERGE

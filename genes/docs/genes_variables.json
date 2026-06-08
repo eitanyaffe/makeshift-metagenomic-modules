@@ -1,0 +1,8 @@
+{
+    "PRODIGAL_GENE_TABLE": "per-assembly gene coordinate table produced by Prodigal (fields: gene, contig, start, end, strand, length, ...)",
+    "UNIREF_GENE_TAX_TABLE": "per-assembly gene annotation table with UniRef100 hits and taxonomic assignments",
+    "PRODIGAL_NT": "per-assembly nucleotide fasta of predicted genes (headers: gene id)",
+    "PRODIGAL_AA": "per-assembly amino-acid fasta of predicted genes (headers: gene id)",
+    "PRODIGAL_GENE_TABLE_MERGE": "merged gene coordinate table across all assemblies",
+    "UNIREF_GENE_TAX_TABLE_MERGE": "merged gene annotation table with UniRef100 hits and taxonomic assignments across all assemblies"
+}
